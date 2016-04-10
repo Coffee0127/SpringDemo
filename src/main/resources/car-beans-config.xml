@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="business" class="carbean.TravelBusiness">
+		<property name="car">
+			<bean class="carbean.CarBenz" />
+		</property>
+	</bean>
+
+    <!-- ref 的第一種寫法 -->
+    <!-- 
+	<bean id="carbean" class="carbean.CarBenz" />
+	<bean id="business" class="carbean.TravelBusiness">
+		<property name="car">
+			<ref bean="carbean" />
+		</property>
+	</bean>
+    -->
+
+    <!-- ref 的第二種寫法 -->
+    <!-- 
+    <bean id="carbean" class="carbean.CarBenz" />
+	<bean id="business" class="carbean.TravelBusiness">
+		<property name="car" ref="carbean" />
+	</bean>
+    -->
+  
+</beans>
