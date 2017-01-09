@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
+
+    <bean id="helloBean" class="com.iisigroup.tutorial.bean.HelloBean">
+        <property name="name" value="Spring XML Tutorial" />
+    </bean>
+
+    <!-- 原本的程式邏輯不需修改 -->
+    <bean id="helloService" class="com.iisigroup.tutorial.service.impl.HelloSpringService">
+        <property name="helloBean" ref="helloBean" />
+    </bean>
+    <bean id="helloErrorService" class="com.iisigroup.tutorial.service.impl.HelloSpringErrorService">
+        <property name="helloBean" ref="helloBean" />
+    </bean>
+
+    <!-- 加入 Advice -->
+    <bean id="helloAdvice" class="com.iisigroup.tutorial.advice.HelloAdvice" />
+    <aop:config>
+        <!-- define pointcut -->
+        <aop:pointcut id="greeting" expression="execution(* com.iisigroup.tutorial.service.HelloService.greeting(..))" />
+
+        <!-- define advisor -->
+        <aop:advisor advice-ref="helloAdvice" pointcut-ref="greeting" />
+        <!-- 
+            1、advisor 是一種特殊的 aspect，advisor 代表 spring 中的 aspect 
+            2、區別：advisor 只持有一個 pointcut 和一個 advice，而 aspect 可以多個 pointcut 和多個 advice
+        -->
+
+        <!-- point cut 可以合併至 advisor，若此 pointcut 未被其他 aop 使用 -->
+        <!-- 
+        <aop:advisor advice-ref="helloAdvice" pointcut="execution(* com.iisigroup.tutorial.service.HelloService.greeting(..))" />
+        -->
+    </aop:config>
+</beans>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
+
+    <bean id="helloBean" class="com.iisigroup.tutorial.bean.HelloBean">
+        <property name="name" value="Spring XML Tutorial" />
+    </bean>
+
+    <!-- 原本的程式邏輯不需修改 -->
+    <bean id="helloService" class="com.iisigroup.tutorial.service.impl.HelloSpringService">
+        <property name="helloBean" ref="helloBean" />
+    </bean>
+    <bean id="helloErrorService" class="com.iisigroup.tutorial.service.impl.HelloSpringErrorService">
+        <property name="helloBean" ref="helloBean" />
+    </bean>
+
+    <!-- 加入 Aspect -->
+    <bean id="helloAspect" class="com.iisigroup.tutorial.aspect.HelloAspect" />
+    <aop:config>
+        <aop:aspect ref="helloAspect">
+            <!-- define pointcut -->
+            <aop:pointcut id="greeting" expression="execution(* com.iisigroup.tutorial.service.HelloService.greeting(..))" />
+            
+            <aop:before method="beforeAdvice1" pointcut-ref="greeting" />
+            <aop:before method="beforeAdvice2" pointcut-ref="greeting" />
+            <aop:after-returning method="afterReturningAdvice" returning="retVal" pointcut-ref="greeting" />
+            <aop:after-throwing method="afterThrowingAdvice" throwing="cause" pointcut-ref="greeting" />
+        </aop:aspect>
+    </aop:config>
+
+    <!--
+        Proxy Reference:
+            http://docs.spring.io/spring/docs/current/spring-framework-reference/html/aop.html#aop-proxying
+    -->
+</beans>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+    
+    <!-- DI by setter -->
+    <bean id="helloBean" class="com.iisigroup.tutorial.bean.HelloBean" scope="singleton">
+        <property name="name" value="Spring XML Tutorial" />
+    </bean>
+
+    <!-- DI by constructor, 但建議還是採用 setter  -->
+    <bean id="myHelloService" class="com.iisigroup.tutorial.service.impl.HelloSpringService" scope="prototype">
+        <!-- constructor arg by name -->
+        <constructor-arg name="helloBean" ref="helloBean" />
+        <!-- constructor arg by index, 要注意順序 -->
+        <!-- 
+        <constructor-arg index="0" ref="helloBean" />
+        -->
+    </bean>
+
+    <!-- 9 ~ 21 行也可寫成巢狀 XML，若 bean 未在其他地方需使用的話 -->
+    <!-- 28 行 bean 不需再額外宣告 id / name，因為其他 bean 無法參考到此 bean -->
+    <!-- 
+    <bean name="myHelloService2" class="com.iisigroup.tutorial.service.impl.HelloSpringService">
+        <constructor-arg name="helloBean">
+            <bean class="com.iisigroup.tutorial.bean.HelloBean">
+                <property name="name" value="Spring Nested XML Tutorial" />
+            </bean>
+        </constructor-arg>
+    </bean>
+    -->
+</beans>
